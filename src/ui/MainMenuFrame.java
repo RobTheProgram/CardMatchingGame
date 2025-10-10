@@ -1,8 +1,14 @@
 package ui;
 
+import utils.HandCursorUtility;
+import utils.AudiowideFont;
+import utils.ApplyRoundedBorder;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.*;
+import javax.swing.BorderFactory;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
@@ -12,6 +18,8 @@ public class MainMenuFrame extends JFrame {
 	public MainMenuFrame() {
 		// Title and setup execution
 		super("Card Matching Game");
+		// Called once to apply the Audiowide font
+		AudiowideFont.register();
 		// Gives the X close button on window
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		// 900 x 600 resolution of pixel size
@@ -22,6 +30,28 @@ public class MainMenuFrame extends JFrame {
 		setContentPane(new RadialGradientPanel());
 		// To set layout to this new gradient panel
 		getContentPane().setLayout(new BorderLayout());
+		
+		// Main Page Title Label Section
+		JLabel mainLabel = new JLabel("Card Matching Game", SwingConstants.CENTER);
+		mainLabel.setFont(AudiowideFont.get(40f, Font.BOLD));
+		mainLabel.setOpaque(false); // Make border background transparent
+		
+		// Border Creation for Main Page Title Label
+		mainLabel.setBorder(BorderFactory.createCompoundBorder(
+				// Outer rounded border settings
+				new ApplyRoundedBorder(12, 7, Color.BLACK),
+				// Pads out the inside of the border to provide space for the main title label going counterclockwise with the parameters
+				BorderFactory.createEmptyBorder(10, 25, 10, 25)
+				));
+		mainLabel.setFocusable(false); // Prevents any focus upon clicking on the label
+		
+		// Create a label panel with FlowLayout to center the alignment of the border edges
+		JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
+		labelPanel.setOpaque(false);
+		labelPanel.add(mainLabel);
+		
+		// Add the label panel with the main title label inside
+		add(labelPanel, BorderLayout.NORTH);
 	}
 	
 	// =============== Gradient Panel Section ===============
@@ -61,4 +91,9 @@ public class MainMenuFrame extends JFrame {
 			
 		}
 	}
-}
+	
+}	
+
+
+	
+
