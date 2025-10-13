@@ -1,6 +1,7 @@
 package ui;
 
 import utils.HandCursorUtility;
+import utils.BoxLayoutSetup;
 import utils.AudiowideFont;
 import utils.ApplyRoundedBorder;
 import javax.swing.JFrame;
@@ -31,28 +32,45 @@ public class MainMenuFrame extends JFrame {
 		// To set layout to this new gradient panel
 		getContentPane().setLayout(new BorderLayout());
 		
-		// Main Page Title Label Section
-		JLabel mainLabel = new JLabel("Card Matching Game", SwingConstants.CENTER);
-		mainLabel.setFont(AudiowideFont.get(40f, Font.BOLD));
-		mainLabel.setOpaque(false); // Make border background transparent
+		//===== Main Page Title Label Section =====
+		JLabel titleLabel = new JLabel("Card Matching Game", SwingConstants.CENTER);
+		titleLabel.setFont(AudiowideFont.get(40f, Font.BOLD));
+		titleLabel.setOpaque(false); // Make border background transparent
 		
 		// Border Creation for Main Page Title Label
-		mainLabel.setBorder(BorderFactory.createCompoundBorder(
+		titleLabel.setBorder(BorderFactory.createCompoundBorder(
 				// Outer rounded border settings
 				new ApplyRoundedBorder(12, 7, Color.BLACK),
 				// Pads out the inside of the border to provide space for the main title label going counterclockwise with the parameters
 				BorderFactory.createEmptyBorder(10, 25, 10, 25)
 				));
-		mainLabel.setFocusable(false); // Prevents any focus upon clicking on the label
+		titleLabel.setFocusable(false); // Prevents any focus upon clicking on the label
+
+		//===== Main Menu Label Section =====
+		JLabel mainMenuLabel = new JLabel("Main Menu", SwingConstants.CENTER);
+		mainMenuLabel.setFont(AudiowideFont.get(28f, Font.BOLD));
+		mainMenuLabel.setOpaque(false); // Make border background transparent
 		
-		// Create a label panel with FlowLayout to center the alignment of the border edges
-		JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
-		labelPanel.setOpaque(false);
-		labelPanel.add(mainLabel);
+		// Border Creation for Main Menu Title Label
+		mainMenuLabel.setBorder(BorderFactory.createCompoundBorder(
+				// Outer rounded border settings
+				new ApplyRoundedBorder(12, 7, Color.BLACK),
+				// Pads out the inside of the border to provide space for the main title label going counterclockwise with the parameters
+				BorderFactory.createEmptyBorder(10, 25, 10, 25)
+				));
+		mainMenuLabel.setFocusable(false); // Prevents any focus upon clicking on the label
+				
+		// ===== Vertical Layout Panel Section ====
+		JPanel verticalLayoutPanel = BoxLayoutSetup.createVerticalPanel(
+				titleLabel,
+				mainMenuLabel
+				);
 		
-		// Add the label panel with the main title label inside
-		add(labelPanel, BorderLayout.NORTH);
+		// Add vertical panel to the window
+		add(verticalLayoutPanel, BorderLayout.NORTH);
+	
 	}
+
 	
 	// =============== Gradient Panel Section ===============
 	private static class RadialGradientPanel extends JPanel {
