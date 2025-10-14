@@ -6,24 +6,28 @@ import java.io.InputStream;
 
 public class AudiowideFont {
 	
-	public static Font BASE; // Font base to be loaded once
+	// Reference Font base to be loaded once
+	public static Font BASE;
 	
+	// Private constructor to prevent instantiation (the creation of new class-derived object)
 	private AudiowideFont() {}
 	
+	// Allows for the customized font to be used globally throughout the application
 	public static void register() {
+		// To attempt to access resources for Audiowide font and then closes the InputStream once finished
 		try(InputStream is = AudiowideFont.class.getResourceAsStream("/fonts/Audiowide-Regular.ttf")) {
+			// To test if the font could not be located
 			if (is == null) {
 				System.out.println("Font not found!");
 				return;
 			}
+			// Create a font object from True type font (TTF)
 			Font awFont = Font.createFont(Font.TRUETYPE_FONT, is);
+			// To register the font with the graphics environment so that it can be used by name
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(awFont);
-			
-			System.out.println("Font made!");
 		}
 		
-			
 		catch(Exception e) {
 			// Message for if failure to load font
 			e.printStackTrace();

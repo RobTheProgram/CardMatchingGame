@@ -1,6 +1,7 @@
 package ui;
 
 import utils.HandCursorUtility;
+import utils.ButtonCreation;
 import utils.BoxLayoutSetup;
 import utils.AudiowideFont;
 import utils.ApplyRoundedBorder;
@@ -10,6 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.*;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 
@@ -60,15 +64,35 @@ public class MainMenuFrame extends JFrame {
 				));
 		mainMenuLabel.setFocusable(false); // Prevents any focus upon clicking on the label
 				
-		// ===== Vertical Layout Panel Section ====
-		JPanel verticalLayoutPanel = BoxLayoutSetup.createVerticalPanel(
+		//===== Game Mode Buttons Section =====
+		JButton standardModeBtn = ButtonCreation.createGameModeButton("Standard Mode", Color.GREEN);
+		JButton timedModeBtn = ButtonCreation.createGameModeButton("Timed Mode", Color.MAGENTA);
+		
+		// To potentially be added later
+		//JButton mathModeBtn = ButtonCreation.createGameModeButton("Math Mode", Color.BLUE);
+		//JButton customModeBtn = ButtonCreation.createGameModeButton("Custom Mode", Color.ORANGE);
+		//JButton challengeModeBtn = ButtonCreation.createGameModeButton("Challenge Mode", Color.RED);
+
+		// ===== Header Layout Panel Section ====
+		JPanel headerPanel = BoxLayoutSetup.createVerticalPanel(
+				Box.createVerticalStrut(1),
 				titleLabel,
 				mainMenuLabel
 				);
 		
-		// Add vertical panel to the window
-		add(verticalLayoutPanel, BorderLayout.NORTH);
-	
+		// ===== Game Mode Button Layout Panel Section ====
+		JPanel gameModeButtonPanel = BoxLayoutSetup.createVerticalPanel(
+				Box.createVerticalStrut(5),				
+				standardModeBtn,
+				timedModeBtn
+				);
+		
+		// Add header panel to the window
+		add(headerPanel, BorderLayout.NORTH);
+		
+		// Add game mode button panel to the window
+		add(gameModeButtonPanel, BorderLayout.CENTER);
+		
 	}
 
 	
