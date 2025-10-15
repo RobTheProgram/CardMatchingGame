@@ -41,6 +41,39 @@ public class ButtonCreation {
 		return gmb;
 		
 	}
+	
+	// To create the difficulty buttons that exist within the Mode menus themselves
+	public static JButton createDiffButton(String text, Color borderColor){
+		// The outward text or titles of the buttons
+		JButton db = new JButton(text);
+		
+		// Applying the custom Audiowide font for these buttons
+		db.setFont(AudiowideFont.get(30f, Font.PLAIN));
+		
+		// Sets the text color of the button text to black
+		db.setForeground(Color.BLACK);
+		
+		// Size (Both the preferred and maximum sizes keep them all aligned in the Box Layout
+		Dimension size = new Dimension(320, 60);
+		db.setPreferredSize(size);
+		db.setMaximumSize(size);
+		
+		// Create rounded borders with inward and outward padding
+		db.setBorder(BorderFactory.createCompoundBorder(
+				new ApplyRoundedBorder(1, 4, borderColor),
+				BorderFactory.createEmptyBorder(10, 25, 10, 25)
+				));
+		
+		// Set background to transparent
+		db.setContentAreaFilled(false);
+		// Remove the focus ring around the border
+		db.setFocusPainted(false);
+		// Show hand cursor when hovered over with the mouse
+		db.setCursor(HandCursorUtility.getHandCursor());
+		
+		return db;
+		
+	}
 }
 
 

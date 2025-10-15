@@ -29,8 +29,8 @@ public class MainMenuFrame extends JFrame {
 		AudiowideFont.register();
 		// Gives the X close button on window
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		// 900 x 600 resolution of pixel size
-		setSize(900,600);
+		// 900 x 700 resolution of pixel size
+		setSize(900,700);
 		// The window, when executed, won't generate according to any position on screen
 		setLocationRelativeTo(null);
 		// Replace the default single-colored content pane with a gradient panel
@@ -80,14 +80,15 @@ public class MainMenuFrame extends JFrame {
 
 		// ===== Header Layout Panel Section ====
 		JPanel headerPanel = BoxLayoutSetup.createVerticalPanel(
-				Box.createVerticalStrut(1),
+				Box.createVerticalStrut(1), // To add space from the top of the window to the header panel
+				titleLabel,
 				titleLabel,
 				mainMenuLabel
 				);
 		
 		// ===== Game Mode Button Layout Panel Section ====
 		JPanel gameModeButtonPanel = BoxLayoutSetup.createVerticalPanel(
-				Box.createVerticalStrut(5),				
+				Box.createVerticalStrut(5),	// To add space between the header and button panels			
 				standardModeBtn,
 				timedModeBtn
 				);
