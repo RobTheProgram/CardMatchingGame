@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.border.*;
 import javax.swing.BorderFactory;
 import utils.ApplyRoundedBorder;
+import utils.ApplyRadialGradientBackground;
 
 public class ButtonCreation {
 	// To create the game mode buttons on the main menu
@@ -72,6 +73,21 @@ public class ButtonCreation {
 		db.setCursor(HandCursorUtility.getHandCursor());
 		
 		return db;
+		
+	}
+	
+	// To create card buttons for a given game board
+	public static JButton createCardButton() {
+		JButton cb = ApplyRadialGradientBackground.createRadialGradientCardBack(
+				Color.decode("#efd176"), // Center shade
+				Color.decode("#fff4b2") // Edge shade
+				);
+		cb.setPreferredSize(new Dimension(100, 250));
+		cb.setContentAreaFilled(false); // To not paint the default background for each card
+		cb.setFocusPainted(false); // To prevent focus ring from appearing when clicking on it
+		cb.setCursor(HandCursorUtility.getHandCursor());
+		cb.setBorder(new ApplyRoundedBorder(8, 4, Color.BLACK));
+		return cb;
 		
 	}
 }
