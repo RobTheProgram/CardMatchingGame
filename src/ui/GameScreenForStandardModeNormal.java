@@ -23,14 +23,14 @@ import java.util.List;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
-public class GameScreenForStandardModeEasy extends JFrame {
+public class GameScreenForStandardModeNormal extends JFrame {
 
     // Keep the cards for wiring listeners / model later
     private final List<JButton> cards;
     
-	public GameScreenForStandardModeEasy() {
+	public GameScreenForStandardModeNormal() {
 		// Title and setup execution
-		super("Standard Mode [Easy]");
+		super("Standard Mode [Normal]");
 		// Called once to apply the Audiowide font
 		AudiowideFont.register();
 		// Gives the X close button on window
@@ -38,12 +38,12 @@ public class GameScreenForStandardModeEasy extends JFrame {
 		// The window, when executed, won't generate according to any position on screen
 		setLocationRelativeTo(null);
 		// Set the background color of the screen
-		setContentPane(ApplySolidBackgroundColor.createSolidBackgroundPanel(Color.decode("#c7eae9")));
+		setContentPane(ApplySolidBackgroundColor.createSolidBackgroundPanel(Color.decode("#d3f4d2")));
 		// To set layout to this new gradient panel
 		getContentPane().setLayout(new BorderLayout());
 		
 		//===== Main Page Title Label Section =====
-		JLabel titleLabel = new JLabel("Standard Mode [Easy]", SwingConstants.CENTER);
+		JLabel titleLabel = new JLabel("Standard Mode [Normal]", SwingConstants.CENTER);
 		titleLabel.setFont(AudiowideFont.get(30f, Font.PLAIN));
 		titleLabel.setOpaque(false); // Make border background transparent
 		
@@ -118,16 +118,16 @@ public class GameScreenForStandardModeEasy extends JFrame {
 		// Add full header to the window
 		add(header, BorderLayout.NORTH);
 				
-		//===== Game Grid 4x4 Section =====
-		// Card size for easy mode
-		Dimension cardSize = new Dimension(110, 130);
+		//===== Game Grid 6x6 Section =====
+		// Card size for normal mode
+		Dimension cardSize = new Dimension(80, 100);
 		
 		GenerateGameGrid.GameGrid grid = GenerateGameGrid.makeGameGrid(
-				4, // rows 
-				4, // columns
+				6, // rows 
+				6, // columns
 				cardSize, //preferred card size
-				60, // Horizontal gap between cards 
-				30 // Vertical gap between cards
+				44, // Horizontal gap between cards 
+				16 // Vertical gap between cards
 				);
 				
 		this.cards = grid.cards; // Establishing card references for later event listeners
