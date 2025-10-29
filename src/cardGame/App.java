@@ -17,10 +17,10 @@ public class App {
 		SwingUtilities.invokeLater(() -> {
 			//new MainMenuFrame().setVisible(true);
 			//new StandardModeMenuFrame().setVisible(true);
-			//new GameScreenForStandardModeEasy().setVisible(true);
+			new GameScreenForStandardModeEasy().setVisible(true);
 			//new GameScreenForStandardModeNormal().setVisible(true);
 			//new GameScreenForStandardModeHard().setVisible(true);
-			new GameScreenForStandardModeAdvanced().setVisible(true);
+			//new GameScreenForStandardModeAdvanced().setVisible(true);
 
 		});
 	}
