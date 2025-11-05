@@ -3,9 +3,16 @@ package utils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JButton;
 import javax.swing.border.*;
+
+import ui.StandardModeMenuFrame;
+
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+
 import utils.ApplyRoundedBorder;
 import utils.ApplyRadialGradientBackground;
 
@@ -89,6 +96,64 @@ public class ButtonCreation {
 		cb.setBorder(new ApplyRoundedBorder(8, 4, Color.BLACK));
 		return cb;
 		
+	}
+
+	// To create buttons for returning to the main menu from game mode screens
+	public static JButton createReturnToMainMenuButton(String text, Color borderColor) {
+		// The outward text or titles of the buttons
+		JButton rb = new JButton(text);
+		
+		// Applying the custom Audiowide font for these buttons
+		rb.setFont(AudiowideFont.get(30f, Font.PLAIN));
+		
+		// Sets the text color of the button text to black
+		rb.setForeground(Color.RED);
+		
+		// Sets the background color of the button
+		//rb.setBackground(Color.WHITE);
+		
+		// Size (Both the preferred and maximum sizes keep them all aligned in the Box Layout
+		Dimension size = new Dimension(450, 60);
+		rb.setPreferredSize(size);
+		rb.setMaximumSize(size);
+		
+		// Create rounded borders with inward and outward padding
+		rb.setBorder(BorderFactory.createCompoundBorder(
+				new ApplyRoundedBorder(1, 4, borderColor),
+				BorderFactory.createEmptyBorder(10, 25, 10, 25)
+				));
+		
+		// Set background to transparent
+		rb.setContentAreaFilled(false);
+		// Remove the focus ring around the border
+		rb.setFocusPainted(false);
+		// Show hand cursor when hovered over with the mouse
+		rb.setCursor(HandCursorUtility.getHandCursor());
+		
+		return rb;
+	}
+	
+	public static JButton createBackOutOfCurrentGameButton() {
+		// Try to load the arrow from classpath
+        java.net.URL imgUrl = ButtonCreation.class.getResource("/assets/BackButtonImage/backArrow.png");
+
+        JButton backBtn;
+        if (imgUrl != null) {
+            ImageIcon backIcon = new ImageIcon(imgUrl);
+            Image scaled = backIcon.getImage().getScaledInstance(46, 46, Image.SCALE_SMOOTH);
+            backBtn = new JButton(new ImageIcon(scaled));
+        } else {
+            // fallback so it’s still visible
+            backBtn = new JButton("←");
+        }
+
+        backBtn.setBorderPainted(false);
+        backBtn.setContentAreaFilled(false);
+        backBtn.setFocusPainted(false);
+        backBtn.setOpaque(false);
+        backBtn.setCursor(HandCursorUtility.getHandCursor());
+
+        return backBtn;
 	}
 }
 

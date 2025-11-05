@@ -1,6 +1,7 @@
 package ui;
 
 import utils.HandCursorUtility;
+import model.MatchingController;
 import utils.GenerateGameGrid;
 import utils.ButtonCreation;
 import utils.BoxLayoutSetup;
@@ -13,6 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.*;
+
+import model.MatchingController;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -27,6 +31,9 @@ public class GameScreenForStandardModeHard extends JFrame {
 
     // Keep the cards for wiring listeners / model later
     private final List<JButton> cards;
+    
+    // Variable for being able to access the Controller methods related to the game
+    private MatchingController controller;
     
 	public GameScreenForStandardModeHard() {
 		// Title and setup execution
@@ -60,7 +67,38 @@ public class GameScreenForStandardModeHard extends JFrame {
 				BorderFactory.createEmptyBorder(10, 25, 10, 25)
 				));
 		titleLabel.setFocusable(false); // Prevents any focus upon clicking on the label
+		
+		// ===== Back Button Section =====
+		JButton backBtn = ButtonCreation.createBackOutOfCurrentGameButton();
+		
+		// Return to the standard game mode screen
+		backBtn.addActionListener(e -> {
+			// Puts a pause on the game upon click with assurance
+			if(controller != null) {
+				controller.pauseGame(true);
+			}
+						
+		    // Show confirmation dialog
+		    utils.QuitGame.confirmUserQuitting(this, () -> {
+		        // User confirmed quitting
+		        new ui.StandardModeMenuFrame().setVisible(true);
+		        this.dispose();
+		    });
 
+		    // Resume gameplay if the frame is still open (user cancelled)
+		    if (this.isDisplayable() && controller != null) {
+		        controller.pauseGame(false);
+		    }
+		});
+
+		// ===== Top row: back on the left, title centered =====
+		JPanel topRow = new JPanel(new BorderLayout());
+		topRow.setOpaque(false);
+		topRow.setBorder(BorderFactory.createEmptyBorder(8, 16, 0, 16));
+
+		topRow.add(backBtn, BorderLayout.WEST);
+		topRow.add(titleWrap, BorderLayout.CENTER);
+		
 		//===== High Score Label Section =====
 		JLabel highScoreLabel = new JLabel("High Score:");
 		highScoreLabel.setFont(AudiowideFont.get(30f, Font.PLAIN));
@@ -111,7 +149,7 @@ public class GameScreenForStandardModeHard extends JFrame {
 		gameStatusRow.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		// Add all components to the header
-		header.add(titleWrap);
+		header.add(topRow);
 		header.add(Box.createVerticalStrut(16)); // To add space in-between
 		header.add(gameStatusRow);
 		

@@ -29,8 +29,8 @@ public class MainMenuFrame extends JFrame {
 		AudiowideFont.register();
 		// Gives the X close button on window
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		// 900 x 700 resolution of pixel size
-		setSize(900,700);
+		// 1280 x 900 resolution of pixel size
+		setSize(1280,900);
 		// The window, when executed, won't generate according to any position on screen
 		setLocationRelativeTo(null);
 		// Replace the default single-colored content pane with a gradient panel
@@ -77,7 +77,16 @@ public class MainMenuFrame extends JFrame {
 		//JButton mathModeBtn = ButtonCreation.createGameModeButton("Math Mode", Color.BLUE);
 		//JButton customModeBtn = ButtonCreation.createGameModeButton("Custom Mode", Color.ORANGE);
 		//JButton challengeModeBtn = ButtonCreation.createGameModeButton("Challenge Mode", Color.RED);
-
+		
+		// ===== Button Clicking Linking Event Listener =====
+		// To link the main menu to the standard game mode screen
+		standardModeBtn.addActionListener(e -> {
+			new StandardModeMenuFrame().setVisible(true);
+			dispose(); // To close this window after clicking
+		});
+		
+		// TO BE ADDED LATER FOR TIMED MODE
+		
 		// ===== Header Layout Panel Section ====
 		JPanel headerPanel = BoxLayoutSetup.createVerticalPanel(
 				Box.createVerticalStrut(1), // To add space from the top of the window to the header panel
@@ -88,8 +97,9 @@ public class MainMenuFrame extends JFrame {
 		
 		// ===== Game Mode Button Layout Panel Section ====
 		JPanel gameModeButtonPanel = BoxLayoutSetup.createVerticalPanel(
-				Box.createVerticalStrut(5),	// To add space between the header and button panels			
+				Box.createVerticalStrut(7),	// To add space between the header and button panels			
 				standardModeBtn,
+				Box.createVerticalStrut(7),	// To add space between the buttons			
 				timedModeBtn
 				);
 		

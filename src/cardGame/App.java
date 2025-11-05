@@ -15,9 +15,9 @@ public class App {
 	public static void main(String[] args) {
 		// Used for thread safety
 		SwingUtilities.invokeLater(() -> {
-			//new MainMenuFrame().setVisible(true);
+			new MainMenuFrame().setVisible(true);
 			//new StandardModeMenuFrame().setVisible(true);
-			new GameScreenForStandardModeEasy().setVisible(true);
+			//new GameScreenForStandardModeEasy().setVisible(true);
 			//new GameScreenForStandardModeNormal().setVisible(true);
 			//new GameScreenForStandardModeHard().setVisible(true);
 			//new GameScreenForStandardModeAdvanced().setVisible(true);

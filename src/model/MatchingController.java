@@ -14,6 +14,8 @@ public final class MatchingController {
 	private CardButton firstSelected = null;
 	// Variable to keep track of clicking activity and disable further interactions to prevent a player from flipping more cards at once than is intended
 	private boolean boardLocked = false;
+	// Variable to putting a pause on everything (more specifically when the Quit Buttton is clicked on)
+	private boolean paused = false;
 	// Gives the user three-fourths of a second to observe the second selected card before flipping it back down if it is not a match
 	private final int FLIP_BACK_DELAY_MS;
 	// Callback variable to reform the flip state of the card
@@ -41,8 +43,16 @@ public final class MatchingController {
 		}
 	}
 	
+	// Method for applying the paused state on a game
+	public void pauseGame(boolean valueState) {
+		this.paused = valueState;
+	}
+	
 	// To handle the logic behind clicking events on cards
 	private void handleClick(CardButton cb) {
+		// To return nothing in the event of a game pause
+		if(paused) return;
+		
 		/*
 		 * First Condition: If board interaction is disabled
 		 * Second Condition: If card match has already been made
@@ -76,6 +86,7 @@ public final class MatchingController {
 	        boardLocked = false; // Resume play
 	        checkWinIfNeeded();
 		}
+		
 		// In the event of the cards not matching
 		else {
 			startDelay(FLIP_BACK_DELAY_MS, () -> {
@@ -112,7 +123,6 @@ public final class MatchingController {
 		// Initiate the timer countdown, or delay in this case
 		timer.start();
 	}
-	
 	
 	// To check and compare if cards match via ID
 	private boolean cardsMatch(Card card1, Card card2) {
