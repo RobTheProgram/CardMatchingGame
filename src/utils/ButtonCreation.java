@@ -8,15 +8,41 @@ import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.border.*;
 
+import ui.GameScreenForStandardModeEasy;
 import ui.StandardModeMenuFrame;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import utils.ApplyRoundedBorder;
 import utils.ApplyRadialGradientBackground;
 
 public class ButtonCreation {
+    // To get the back icon for the cards in their faced-down state
+    private static final Icon CARD_BACK_ICON = loadCardBackIcon();
+    
+    // Method to load back icons onto cards upon creation
+    private static Icon loadCardBackIcon() {
+    	// To load the png file from the resources folder
+        java.net.URL url = ButtonCreation.class.getResource("/assets/BackButtonImage/backIcon.png");
+        // If the back icon png is found
+        if (url != null) {
+            ImageIcon raw = new ImageIcon(url);
+            // Scale the back icon images to size
+            Image scaled = raw.getImage().getScaledInstance(110, 130, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaled);
+        }
+        // fallback: empty icon
+        System.err.println("⚠️ backIcon.png not found in /assets/BackButtonImage/");
+    	return new ImageIcon();
+    }
+    
+    // To allow the Matching Controller to retrieve the back icon again for when a match isn't made yet
+    public static Icon getCardBackIcon() {
+    	return CARD_BACK_ICON;
+    }
+    
 	// To create the game mode buttons on the main menu
 	public static JButton createGameModeButton(String text, Color borderColor){
 		// The outward text or titles of the buttons
@@ -85,15 +111,17 @@ public class ButtonCreation {
 	
 	// To create card buttons for a given game board
 	public static JButton createCardButton() {
-		JButton cb = ApplyRadialGradientBackground.createRadialGradientCardBack(
-				Color.decode("#efd176"), // Center shade
-				Color.decode("#fff4b2") // Edge shade
-				);
-		cb.setPreferredSize(new Dimension(100, 250));
+		JButton cb = new JButton();
+		cb.setIcon(CARD_BACK_ICON); // Sets the back icon of cards by default
+		// Dimensions to match the grid size
+		cb.setPreferredSize(new Dimension(110, 130));
+		
+		// Stylization of the card buttons
 		cb.setContentAreaFilled(false); // To not paint the default background for each card
 		cb.setFocusPainted(false); // To prevent focus ring from appearing when clicking on it
 		cb.setCursor(HandCursorUtility.getHandCursor());
 		cb.setBorder(new ApplyRoundedBorder(8, 4, Color.BLACK));
+		
 		return cb;
 		
 	}
@@ -133,6 +161,7 @@ public class ButtonCreation {
 		return rb;
 	}
 	
+	// To back out of the current game at the top-left corner
 	public static JButton createBackOutOfCurrentGameButton() {
 		// Try to load the arrow from classpath
         java.net.URL imgUrl = ButtonCreation.class.getResource("/assets/BackButtonImage/backArrow.png");
