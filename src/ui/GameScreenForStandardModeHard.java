@@ -1,6 +1,10 @@
 package ui;
 
 import utils.HandCursorUtility;
+import utils.CardIconography;
+import utils.ApplyCardIcons;
+import model.Card;
+import model.CardButton;
 import model.MatchingController;
 import utils.GenerateGameGrid;
 import utils.ButtonCreation;
@@ -14,23 +18,26 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.*;
-
-import model.MatchingController;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import utils.ConvertJButtonsToCardButtons;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+
 public class GameScreenForStandardModeHard extends JFrame {
 
     // Keep the cards for wiring listeners / model later
-    private final List<JButton> cards;
+    private final List<JButton> cardButtons;
     
     // Variable for being able to access the Controller methods related to the game
     private MatchingController controller;
@@ -168,7 +175,7 @@ public class GameScreenForStandardModeHard extends JFrame {
 				16 // Vertical gap between cards
 				);
 				
-		this.cards = grid.cards; // Establishing card references for later event listeners
+		this.cardButtons = grid.cards; // Establishing card references for later event listeners
 		
 		// Center grid panel
 		add(grid.grid, BorderLayout.CENTER);
@@ -177,10 +184,43 @@ public class GameScreenForStandardModeHard extends JFrame {
 		setSize(1280,900); // 1280 x 900 resolution of pixel size
 		setLocationRelativeTo(null); // Center on screen
 		setVisible(true);
+	
+		// ===== Assign IDs to buttons (pairs, shuffled) =====
+		ApplyCardIcons.applyRandomPairs(this.cardButtons, cardSize, 144);
+		
+	    // ===== Build CardButton list for controller =====
+	    List<CardButton> wrappedCards = ConvertJButtonsToCardButtons.buildCardButtonsFromSwingButtons(this.cardButtons, cardSize);
+		
+	    // ===== Grab the current “back” icon from the first button =====
+	    Icon backIcon = ButtonCreation.getCardBackIcon();
+		
+	    // ===== Matching Controller Creation =====
+		controller = new MatchingController(
+		        750, // Delay in milliseconds for the cards to flip back down
+		        
+		        // Ties the card buttons with the controller settings of ID, icon states, and the size of said icons and updates them accordingly
+		        cb -> {
+		            // Casts the object of ID retrieval with the integer number of card IDs
+		            int cardId = (int) cb.button.getClientProperty("cardId");
+		            
+		            // Face Icon of cards will be shown if the card is in a facing-up state
+		            if (cb.cardRef.isFacingUp) {
+		                Icon faceIcon = CardIconography.getScaledIcon(cardId, cardSize.width, cardSize.height);
+		                cb.button.setIcon(faceIcon);
+		            } 
+		            // The opposite will be true and they wil go back to their default states of being face down
+		            else {
+		                // Set back-of-card icon here with the backIcon png image
+		                cb.button.setIcon(backIcon); // or load a shared back icon
+		            }
+		        },
+		        () -> {
+		            // Victory text to be printed out in the java console
+		            System.out.println("You won!");
+		        }
+		);
+		
+	    // Hook the cards into the controller so clicks work
+		controller.attach(wrappedCards);
 	}
-		// In the case of needing to access cards from elsewhere
-		public List<JButton> getCards(){
-			return cards;
-		}
-
 }

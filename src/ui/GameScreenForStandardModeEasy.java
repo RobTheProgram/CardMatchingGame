@@ -224,13 +224,5 @@ public class GameScreenForStandardModeEasy extends JFrame {
 		
         // Hook the cards into the controller so clicks work
     	controller.attach(wrappedCards);
-	
 	}
-		
-//		// In the case of needing to access cards from elsewhere
-//		public List<JButton> getCards(){
-//			return cardButtons;
-//		}
-		
-
 }
