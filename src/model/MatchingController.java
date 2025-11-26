@@ -24,14 +24,20 @@ public final class MatchingController {
 	private final Runnable victory;
 	// List of every card on a given game grid
 	private List<CardButton> allCards;
+	// Callback for if a pair is made, or not, for the purposes of calculating high school
+	private final java.util.function.Consumer<Boolean> pairResolved;
 	
 	// ===== Constructor =====
-	public MatchingController(int FLIP_BACK_DELAY_MS, 
+	public MatchingController(
+			int FLIP_BACK_DELAY_MS, 
 			Consumer<CardButton> updateCardImage, 
-			Runnable victory) {
+			Runnable victory,
+			java.util.function.Consumer<Boolean> pairResolved
+			) {
 		this.FLIP_BACK_DELAY_MS = FLIP_BACK_DELAY_MS;
 		this.updateCardImage = updateCardImage;
 		this.victory = victory;
+		this.pairResolved = pairResolved;
 	}
 	
 	// Method to attach cards to the controller
@@ -82,6 +88,12 @@ public final class MatchingController {
 			markMatched(firstSelected, cb); // Confirm match
 	        updateCardImage.accept(firstSelected); // change first card
 	        updateCardImage.accept(cb); // change second card
+	        
+	        // To mark that a match has been concluded
+	        if (pairResolved != null) {
+	        	pairResolved.accept(true); // true = match
+	        }
+	        
 	        firstSelected = null; // Clear card states 
 	        boardLocked = false; // Resume play
 	        checkWinIfNeeded();
@@ -95,6 +107,11 @@ public final class MatchingController {
 	            updateCardImage.accept(firstSelected);
 	            cb.cardRef.flipDown(); // flip down second card
 	            updateCardImage.accept(cb);
+	            
+		        // To mark that a mismatch has been concluded
+		        if (pairResolved != null) {
+		        	pairResolved.accept(false); // false = mismatch
+		        }
 	            
 	            // Reset the state of the cards and resume play
 	            firstSelected = null;
@@ -146,5 +163,5 @@ public final class MatchingController {
 		// The condition in which the all cards have been matched
 		if(victory != null) victory.run();
 	}
-
+	
 }

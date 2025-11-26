@@ -5,6 +5,7 @@ import utils.ButtonCreation;
 import utils.BoxLayoutSetup;
 import utils.AudiowideFont;
 import utils.ApplyRoundedBorder;
+import utils.DifficultyConfigurationsForStandardMode;
 import utils.ApplyVerticalGradientBackground;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,6 +41,8 @@ public class StandardModeMenuFrame extends JFrame{
 				)));
 		// To set layout to this new gradient panel
 		getContentPane().setLayout(new BorderLayout());
+		
+		
 		
 		//===== Standard Mode Title Label Section =====
 		JLabel titleLabel = new JLabel("Standard Mode", SwingConstants.CENTER);
@@ -87,25 +90,25 @@ public class StandardModeMenuFrame extends JFrame{
 		//===== Button Link Section =====
 		// Link to the Easy Mode Game Screen
 		easyBtn.addActionListener(e -> {
-			new GameScreenForStandardModeEasy().setVisible(true);
+			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.EASY).setVisible(true);
 			dispose(); // To close this window after clicking
 		});
 				
 		// Link to the Normal Mode Game Screen
 		normalBtn.addActionListener(e -> {
-			new GameScreenForStandardModeNormal().setVisible(true);
+			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.NORMAL).setVisible(true);
 			dispose(); // To close this window after clicking
 		});
 		
 		// Link to the Hard Mode Game Screen
 		hardBtn.addActionListener(e -> {
-			new GameScreenForStandardModeHard().setVisible(true);
+			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.HARD).setVisible(true);
 			dispose(); // To close this window after clicking
 		});
 		
 		// Link to the Advanced Mode Game Screen
 		advancedBtn.addActionListener(e -> {
-			new GameScreenForStandardModeAdvanced().setVisible(true);
+			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.ADVANCED).setVisible(true);
 			dispose(); // To close this window after clicking
 		});
 		

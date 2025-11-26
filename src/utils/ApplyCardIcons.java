@@ -49,12 +49,6 @@ public class ApplyCardIcons {
 			
 			// Store cardId for MatchingController usage
 			btn.putClientProperty("cardId", id);
-			
-			// Apply visuals
-//			btn.setIcon(icon);
-//          btn.setBorderPainted(false);
-//          btn.setContentAreaFilled(false);
-//          btn.setFocusPainted(false);
 		}
 	}
 }

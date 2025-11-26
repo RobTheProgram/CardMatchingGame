@@ -8,7 +8,6 @@ import java.awt.Image;
 import javax.swing.JButton;
 import javax.swing.border.*;
 
-import ui.GameScreenForStandardModeEasy;
 import ui.StandardModeMenuFrame;
 
 import javax.swing.BorderFactory;
@@ -183,6 +182,38 @@ public class ButtonCreation {
         backBtn.setCursor(HandCursorUtility.getHandCursor());
 
         return backBtn;
+	}
+	
+	public static JButton createQuestionButton(String text, Color backgroundColor) {
+		// The outward text of the question buttons
+		JButton qb = new JButton(text);
+		
+		// Applying the custom Audiowide font for these buttons
+		qb.setFont(AudiowideFont.get(20f, Font.PLAIN));
+		
+		// Sets the text color of the button text to black
+		qb.setForeground(Color.BLACK);
+		
+		// Sets the background color of the button
+		qb.setBackground(backgroundColor);
+		
+		// Size (Both the preferred and maximum sizes keep them all aligned in the Box Layout
+		Dimension size = new Dimension(115, 35);
+		qb.setPreferredSize(size);
+		qb.setMaximumSize(size);
+		
+		// Create rounded borders with inward and outward padding
+		qb.setBorder(BorderFactory.createCompoundBorder(
+				new ApplyRoundedBorder(1, 4, Color.BLACK),
+				BorderFactory.createEmptyBorder(5, 12, 5, 12)
+				));
+		
+		// Remove the focus ring around the border
+		qb.setFocusPainted(false);
+		// Show hand cursor when hovered over with the mouse
+		qb.setCursor(HandCursorUtility.getHandCursor());
+		
+		return qb;
 	}
 }
 
