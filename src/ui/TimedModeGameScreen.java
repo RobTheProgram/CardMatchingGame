@@ -13,15 +13,18 @@ import java.awt.*;
 import java.util.List;
 
 // Generates an entire game screen according to the difficulty mode chosen
-public class StandardModeGameScreen extends JFrame {
+public class TimedModeGameScreen extends JFrame {
 	private final GameConfig config;				// Difficulty configuration object
     private final List<JButton> cardButtons;		// Card buttons list array to contain them all
     private HighScoreUpdater score;					// High Score object
     private JLabel highScoreValue;					// Label to display the current high score dynamically
     private JLabel multiplierValue;					// Label to display the current multiplier dynamically
+    private JLabel timerValue;						// Label to display the current time
     private MatchingController controller;			// Controller object
+    private int currentTime;						// Current time in seconds
+    private Timer countdown;						// The time limit that is counted down by seconds
 
-    public StandardModeGameScreen(GameConfig config) {
+    public TimedModeGameScreen(GameConfig config) {
         super(config.title);						// Super constructor
         this.config = config;						// Match parameter with the local
 
@@ -102,25 +105,36 @@ public class StandardModeGameScreen extends JFrame {
                         cb.button.setIcon(backIcon);
                     }
                     highScoreValue.setText(String.valueOf(score.getScore()));
-                    multiplierValue.setText("x" + score.getMultiplier());
                 },
                 
-		        // Victory parameter
+		        // End game popup parameter
                 () -> {
+                	// Stops the timer upon a victory
+                	if (countdown != null && countdown.isRunning())
+                	    countdown.stop();
+                	
 		            // Victory text to be printed out in the java console
-                    ProjectEndOfGamePopup.showVictoryPopup(
+                	ProjectEndOfGamePopup.showVictoryPopup(
                             this,				// Parent JFrame window
                             score.getScore(),	// Final Score
-                            "N/A",				// Formatted time label,
-                            "Victory!",			// Victory message
-                            () -> new StandardModeGameScreen(config).setVisible(true),	// Replay game
+                            formatTimeRemaining(),	// Formatted time label
+                            "Victory!",
+                            () -> new TimedModeGameScreen(config).setVisible(true),	// Replay game
                             () -> new ui.StandardModeMenuFrame().setVisible(true)		// Quit game
                     );
                 },
                 
 		        // High Score parameter for the pairResolved callback
                 matched -> {
-                    if (matched) score.forMatch();
+                    if (matched) {
+                    	score.forMatch();
+                    	
+                        // Add seconds equal to the multiplier to add bonus time
+                        currentTime += score.getMultiplier();
+
+                        // Keep timer UI updated and formatted
+                        timerValue.setText(formatTimeRemaining());
+                    }
                     else score.forMismatch();
                     
 		        	// Display both the updated high score and multiplier on screen
@@ -131,8 +145,10 @@ public class StandardModeGameScreen extends JFrame {
         
         // Hook the cards into the controller so clicks work
         controller.attach(wrappedCards);
+        // Start the countdown after everything has been loaded on the game screen
+        SwingUtilities.invokeLater(() -> initiateCountdown());
     }
-
+    
     // ===== UI HEADER BUILDER =====
     private JPanel buildHeader() {
 
@@ -141,13 +157,17 @@ public class StandardModeGameScreen extends JFrame {
         
         // Back button on click logic
         backBtn.addActionListener(e -> {
+        	// Stops the timer upon clicking on the back button
+        	if (countdown != null && countdown.isRunning())
+        	    countdown.stop();
+        	
 			// Puts a pause on the game upon click with assurance
             if (controller != null) controller.pauseGame(true);
 		    
             // Show confirmation dialog
             utils.QuitGame.confirmUserQuitting(this, () -> {
 		        // User confirmed quitting
-                new ui.StandardModeMenuFrame().setVisible(true);
+                new ui.TimedModeMenuFrame().setVisible(true);
                 this.dispose();
             });
 
@@ -220,8 +240,8 @@ public class StandardModeGameScreen extends JFrame {
         timerTitle.setFont(AudiowideFont.get(28f, Font.PLAIN));
         
         // Timer value display (infinity sign to represent unlimited time)
-        JLabel timerValue = new JLabel("∞");
-        timerValue.setFont(new Font("Dialog", Font.PLAIN, 40));
+        timerValue = new JLabel("∞");
+        timerValue.setFont(AudiowideFont.get(28f, Font.PLAIN));
         
         // Creates a width wide enough for any number up to 3 digits
         timerValue.setPreferredSize(new Dimension(80, 40));
@@ -254,8 +274,55 @@ public class StandardModeGameScreen extends JFrame {
         return header;
     }
     
-    // Getter method to get the current game mode for a given game
-    public GameConfig getConfig() {
+
+    //===== COUNTDOWN LOGIC =====
+    
+    private void initiateCountdown() {
+        currentTime = config.timeLimit; // Time limit for a given game mode
+
+        timerValue.setText(String.valueOf(formatTimeRemaining())); // Sets the initial starting time
+        
+        // Makes the count down that will decrease the time per second
+        countdown = new Timer(1000, e -> {
+        	currentTime--;
+            timerValue.setText(String.valueOf(formatTimeRemaining())); // Updated and formatted string of the time
+            
+            // Game over
+            if (currentTime <= 0) {
+                countdown.stop();
+                onTimeExpired();
+         }
+	});
+        // Begins the count down
+        countdown.start();
+    }
+    
+
+    // Method to display the failure screen when all the time is ran out
+    private void onTimeExpired() {
+    	
+    	// Stops the timer upon the time limit being exhausted
+    	if (countdown != null && countdown.isRunning())
+    	    countdown.stop();
+    	
+    	// Display the failure popup with such parameters
+    	ProjectEndOfGamePopup.showFailurePopup(
+    			this,
+    			score.getScore(),
+    			"00:00",
+    			"Failure",
+    			() -> new TimedModeGameScreen(config).setVisible(true),
+    			() -> new ui.TimedModeMenuFrame().setVisible(true)
+    			);    	
+    }
+    
+    // To format the time of a given game into seconds
+    private String formatTimeRemaining() {
+    	return currentTime + "s";
+    }
+	
+	// Getter method to get the current game mode for a given game
+	public GameConfig getConfig() {
     	return config;
     }
 	

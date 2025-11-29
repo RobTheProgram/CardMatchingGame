@@ -90,25 +90,25 @@ public class StandardModeMenuFrame extends JFrame{
 		//===== Button Link Section =====
 		// Link to the Easy Mode Game Screen
 		easyBtn.addActionListener(e -> {
-			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.EASY).setVisible(true);
+			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.STANDARD_EASY).setVisible(true);
 			dispose(); // To close this window after clicking
 		});
 				
 		// Link to the Normal Mode Game Screen
 		normalBtn.addActionListener(e -> {
-			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.NORMAL).setVisible(true);
+			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.STANDARD_NORMAL).setVisible(true);
 			dispose(); // To close this window after clicking
 		});
 		
 		// Link to the Hard Mode Game Screen
 		hardBtn.addActionListener(e -> {
-			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.HARD).setVisible(true);
+			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.STANDARD_HARD).setVisible(true);
 			dispose(); // To close this window after clicking
 		});
 		
 		// Link to the Advanced Mode Game Screen
 		advancedBtn.addActionListener(e -> {
-			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.ADVANCED).setVisible(true);
+			new StandardModeGameScreen(DifficultyConfigurationsForStandardMode.STANDARD_ADVANCED).setVisible(true);
 			dispose(); // To close this window after clicking
 		});
 		

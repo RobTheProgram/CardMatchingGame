@@ -8,27 +8,29 @@ import utils.DifficultyConfigurationsForStandardMode;
 import java.awt.*;
 import utils.ButtonCreation;
 
-public class ProjectVictoryPopup {
-	private ProjectVictoryPopup() {} // Utility class only
+public class ProjectEndOfGamePopup {
+	private ProjectEndOfGamePopup() {} // Utility class only
 	
 	 /**
-     * Shows a victory popup with the final score, time, and replay/quit options.
+     * Shows a popup with the final score, time, and replay/quit options.
      *
      * @param window               The parent JFrame (the game screen)
      * @param finalScore           The score the player finished with
      * @param timeElapsedFormatted Preformatted string like "05:45" or "∞"
+     * @param message 			   Displays the appropriate message indicating either victory or failure
      * @param onReplay             Callback if the player chooses to replay
      * @param onQuit               Callback if the player chooses to quit
      */
-    public static void showVictoryPopup(
+    public static void showPopup(
             JFrame window,
             int finalScore,
             String timeElapsedFormatted,
+            String message,
             Runnable onReplay,
             Runnable onQuit
     ) {
     	// Create dialog popup
-    	JDialog popup = new JDialog(window, "Victory!", true);
+    	JDialog popup = new JDialog(window, message, true);
     	popup.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // Create message panel
@@ -38,7 +40,7 @@ public class ProjectVictoryPopup {
         container.setBackground(Color.WHITE);
         
         // Title and stylization
-        JLabel title = new JLabel("Victory!");
+        JLabel title = new JLabel(message);
         title.setFont(AudiowideFont.get(28f, Font.PLAIN));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         
@@ -111,5 +113,41 @@ public class ProjectVictoryPopup {
         popup.setLocationRelativeTo(window);
         popup.setVisible(true);
         
+    }
+    
+    // Should the player succeed in matching all cards within the time limit or plays to the end, display the victory popup
+    public static void showVictoryPopup(
+            JFrame window,
+            int finalScore,
+            String timeElapsedFormatted,
+            String message,
+            Runnable onReplay,
+            Runnable onQuit
+    ) {
+        showPopup(window, 
+        		finalScore, 
+        		timeElapsedFormatted, 
+        		"Victory!", 
+        		onReplay, 
+        		onQuit
+        		);
+    }
+    
+    // Should the player fail to match within the time limit, display the failure popup
+    public static void showFailurePopup(
+            JFrame window,
+            int finalScore,
+            String timeElapsedFormatted,
+            String message,
+            Runnable onReplay,
+            Runnable onQuit
+    ) {
+        showPopup(window, 
+        		finalScore, 
+        		timeElapsedFormatted, 
+        		"Time's Up!", 
+        		onReplay, 
+        		onQuit
+        		);
     }
 }

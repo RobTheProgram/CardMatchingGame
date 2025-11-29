@@ -79,13 +79,19 @@ public class MainMenuFrame extends JFrame {
 		//JButton challengeModeBtn = ButtonCreation.createGameModeButton("Challenge Mode", Color.RED);
 		
 		// ===== Button Clicking Linking Event Listener =====
+		
 		// To link the main menu to the standard game mode screen
 		standardModeBtn.addActionListener(e -> {
 			new StandardModeMenuFrame().setVisible(true);
 			dispose(); // To close this window after clicking
 		});
 		
-		// TO BE ADDED LATER FOR TIMED MODE
+		// To link the main menu to the timed game mode screen
+		timedModeBtn.addActionListener(e -> {
+			new TimedModeMenuFrame().setVisible(true);
+			dispose(); // To close this window after clicking
+		});
+		
 		
 		// ===== Header Layout Panel Section ====
 		JPanel headerPanel = BoxLayoutSetup.createVerticalPanel(
