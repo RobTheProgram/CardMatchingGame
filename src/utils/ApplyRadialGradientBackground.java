@@ -61,8 +61,8 @@ public class ApplyRadialGradientBackground {
 	            Graphics2D g2D = (Graphics2D) g.create();
 	            int width = getWidth();
 	            int height = getHeight();
-	            Point2D center = new Point2D.Float(width / 2f, height / 2f);
-	            float radius = Math.max(width, height) / 2f;
+	            Point2D center = new Point2D.Float(width / 2f, height / 2f); // The center point of the gradient
+	            float radius = Math.max(width, height) / 2f; // gradient size
 
 	            RadialGradientPaint rgp = new RadialGradientPaint(
 	                center,
@@ -71,9 +71,9 @@ public class ApplyRadialGradientBackground {
 	                new Color[]{centerGradient, edgeGradient}
 	            );
 
-	            g2D.setPaint(rgp);
-	            g2D.fillRect(0, 0, width, height);
-	            g2D.dispose();
+	            g2D.setPaint(rgp); // apply gradient
+	            g2D.fillRect(0, 0, width, height); // fill background
+	            g2D.dispose(); // cleanup
 	        }
 	    };
 	    // Basic styling for card back buttons

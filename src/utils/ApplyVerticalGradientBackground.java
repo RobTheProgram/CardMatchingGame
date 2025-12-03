@@ -10,6 +10,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
+// Method to apply vertical gradients to the game mode screens
 public class ApplyVerticalGradientBackground {
 	// =============== Gradient Panel Section ===============
 	public static JPanel createVerticalGradientPanel(Color topShade, Color bottomShade) {

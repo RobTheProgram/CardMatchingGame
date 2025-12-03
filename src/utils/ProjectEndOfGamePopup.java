@@ -7,6 +7,7 @@ import utils.DifficultyConfigurationsForStandardMode;
 
 import java.awt.*;
 import utils.ButtonCreation;
+import audio.SFXPlayer;
 
 public class ProjectEndOfGamePopup {
 	private ProjectEndOfGamePopup() {} // Utility class only
@@ -124,6 +125,9 @@ public class ProjectEndOfGamePopup {
             Runnable onReplay,
             Runnable onQuit
     ) {
+    	// Play the victory sound effect
+        SFXPlayer.play("/sfx/victory.wav");
+
         showPopup(window, 
         		finalScore, 
         		timeElapsedFormatted, 
@@ -142,6 +146,10 @@ public class ProjectEndOfGamePopup {
             Runnable onReplay,
             Runnable onQuit
     ) {
+    	
+    	// Play the failure sound effect
+        SFXPlayer.play("/sfx/failure.wav");
+        
         showPopup(window, 
         		finalScore, 
         		timeElapsedFormatted, 

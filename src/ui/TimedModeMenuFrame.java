@@ -42,8 +42,6 @@ public class TimedModeMenuFrame extends JFrame {
 			// To set layout to this new gradient panel
 			getContentPane().setLayout(new BorderLayout());
 			
-			
-			
 			//===== Standard Mode Title Label Section =====
 			JLabel titleLabel = new JLabel("Timed Mode", SwingConstants.CENTER);
 			titleLabel.setFont(AudiowideFont.get(40f, Font.PLAIN));

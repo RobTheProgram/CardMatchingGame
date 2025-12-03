@@ -120,7 +120,7 @@ public class TimedModeGameScreen extends JFrame {
                             formatTimeRemaining(),	// Formatted time label
                             "Victory!",
                             () -> new TimedModeGameScreen(config).setVisible(true),	// Replay game
-                            () -> new ui.StandardModeMenuFrame().setVisible(true)		// Quit game
+                            () -> new ui.TimedModeMenuFrame().setVisible(true)		// Quit game
                     );
                 },
                 

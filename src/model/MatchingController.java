@@ -2,6 +2,8 @@ package model;
 import javax.swing.Timer;
 import java.util.List;
 import java.util.function.Consumer;
+import audio.SFXPlayer;
+
 
 /**
  * MatchingController:
@@ -69,6 +71,9 @@ public final class MatchingController {
 			return;
 		}
 		
+		// Play sound effect for a card flip
+		SFXPlayer.play("/sfx/card_flip.wav");
+		
 		// Flip current card for image
 		cb.cardRef.flipUp();
 		updateCardImage.accept(cb);
@@ -85,6 +90,9 @@ public final class MatchingController {
 		// If cards match
 		if (cardsMatch(firstSelected.cardRef, cb.cardRef)) // Check both cards for a potential match
 		{ 
+			// Play sound effect upon a match
+            SFXPlayer.play("/sfx/match.wav");
+
 			markMatched(firstSelected, cb); // Confirm match
 	        updateCardImage.accept(firstSelected); // change first card
 	        updateCardImage.accept(cb); // change second card
@@ -102,6 +110,10 @@ public final class MatchingController {
 		// In the event of the cards not matching
 		else {
 			startDelay(FLIP_BACK_DELAY_MS, () -> {
+				
+				// Play sound effect upon a mismatch
+                SFXPlayer.play("/sfx/mismatch.wav");
+
 				// Flip both cards back down
 				firstSelected.cardRef.flipDown(); // flip down first card
 	            updateCardImage.accept(firstSelected);

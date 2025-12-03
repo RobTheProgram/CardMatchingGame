@@ -174,7 +174,8 @@ public class ButtonCreation {
             // fallback so it’s still visible
             backBtn = new JButton("←");
         }
-
+        
+        // Stylization
         backBtn.setBorderPainted(false);
         backBtn.setContentAreaFilled(false);
         backBtn.setFocusPainted(false);
