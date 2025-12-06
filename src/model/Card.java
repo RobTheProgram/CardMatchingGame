@@ -2,6 +2,11 @@ package model;
 import javax.swing.Icon;
 
 // Card model for each card of each mode
+/**
+ * Logical model for an individual card in the game.
+ * Tracks the card's ID, face icon, whether it is currently face up, and whether it is matched.
+ * (Requirements 2.1.0, 2.2.0, 3.0.0)
+ */
 public final class Card {
 	public final int id; // unique id for each card
 	public final Icon face; // The front, or design print, of each card

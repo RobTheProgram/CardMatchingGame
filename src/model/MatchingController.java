@@ -11,6 +11,14 @@ import audio.SFXPlayer;
  * The UI screen (GameScreenForStandardModeEasy, etc.) gives this controller
  * everything it needs via the constructor + attach().
  */
+
+/**
+ * Core controller for card matching logic.
+ * Enforces two-card turns, checks for matches/mismatches, flips cards,
+ * updates score callbacks, and detects when the board has been cleared.
+ * (Requirements 2.0.0, 2.1.0, 2.2.0, 3.0.0)
+ */
+
 public final class MatchingController {
 	// Once a card is clicked on, make it a CardButton, otherwise, null = no selection yet
 	private CardButton firstSelected = null;
@@ -43,6 +51,10 @@ public final class MatchingController {
 	}
 	
 	// Method to attach cards to the controller
+	/**
+ * Attaches the list of CardButton objects to this controller and wires click handlers.
+ * (Requirement 2.0.0)
+ */
 	public void attach(List<CardButton> cards) {
 		this.allCards = cards;
 		
@@ -57,6 +69,11 @@ public final class MatchingController {
 	}
 	
 	// To handle the logic behind clicking events on cards
+	/**
+ * Handles a single card click in the current turn.
+ * Applies the two-card per turn rule and triggers match/mismatch behavior.
+ * (Requirements 2.0.0, 2.1.0, 2.2.0)
+ */
 	private void handleClick(CardButton cb) {
 		// To return nothing in the event of a game pause
 		if(paused) return;
@@ -154,11 +171,19 @@ public final class MatchingController {
 	}
 	
 	// To check and compare if cards match via ID
+	/**
+ * Returns true if the two provided cards form a matching pair.
+ * (Requirement 2.1.0)
+ */
 	private boolean cardsMatch(Card card1, Card card2) {
 		return card1.id == card2.id;
 	}
 	
 	// To mark both cards as matched for the remainder of the game
+	/**
+ * Marks two matching cards as permanently matched and updates their state.
+ * (Requirement 2.1.0)
+ */
 	private void markMatched(CardButton firstCard, CardButton secondCard) {
 		firstCard.cardRef.isMatched = true;
 		secondCard.cardRef.isMatched = true;
@@ -168,6 +193,10 @@ public final class MatchingController {
 	}
 	
 	// To confirm if the board has been completed with every card matched up
+	/**
+ * Checks whether all cards are matched and triggers the victory callback if so.
+ * (Requirement 2.1.0)
+ */
 	private void checkWinIfNeeded() {
 		for (CardButton cb : allCards) {
 			if(!cb.cardRef.isMatched) return; // The game has yet to conclude
