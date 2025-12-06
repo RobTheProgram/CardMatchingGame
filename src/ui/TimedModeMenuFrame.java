@@ -21,6 +21,12 @@ import javax.swing.JButton;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * Menu screen for Timed Mode.
+ * Lets the user choose a timed difficulty and initializes the timed game configuration.
+ * (Requirements 1.0.0, 1.2.0)
+ */
+
 public class TimedModeMenuFrame extends JFrame {
 	// =============== Standard Mode Menu Frame Setup Section ===============
 		public TimedModeMenuFrame() {

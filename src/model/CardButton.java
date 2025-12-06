@@ -2,6 +2,11 @@ package model;
 import javax.swing.JButton;
 
 // Connects a JButton (visual card) with its Card model (logic/data)
+/**
+ * Binds a visual JButton with its underlying Card model.
+ * Used by the controller and UI to flip cards and update their displayed image.
+ * (Requirements 2.1.0, 2.2.0, 3.0.0)
+ */
 public final class CardButton {
 	// The visual card button displayed on the board
 	public final JButton button;

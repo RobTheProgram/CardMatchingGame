@@ -4,6 +4,11 @@ import java.io.*;
 import javax.swing.JLabel;
 
 // Class to dynamically update the high score
+/**
+ * Manages the player's score and multiplier, increasing or decreasing them
+ * based on matches and mismatches.
+ * (Requirement 2.1.0)
+ */
 public class HighScoreUpdater {
 	private final int basePoints;		// Standard points given when a match is made
 	private final int maxMultiplier; 	// To allow for the increase in multiplier value

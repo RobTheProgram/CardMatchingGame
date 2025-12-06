@@ -5,6 +5,11 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+/**
+ * Utility for assigning randomized card IDs and (optionally) scaled icons to card buttons.
+ * (Requirement 3.0.0)
+ */
+
 public class ApplyCardIcons {
 	// Private constructor to prevent instantiation and make it a utility only
     private ApplyCardIcons() {}	
@@ -16,6 +21,10 @@ public class ApplyCardIcons {
      * @param cardSize the preferred size for scaling icons
      * @param totalIconCount total number of available icons
      */
+	/**
+ * Applies random paired card IDs to the given list of JButton cards.
+ * (Requirement 3.0.0)
+ */
 	public static void applyRandomPairs(List<JButton> cards, Dimension cardSize, int totalIconNumber) {
 		int totalCardAmount = cards.size(); // Gets the total number of cards on a given board
 		int pairCount = totalCardAmount / 2; // ex: 16 cards total equals 8 total pairs

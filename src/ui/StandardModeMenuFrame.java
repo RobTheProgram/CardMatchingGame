@@ -21,6 +21,12 @@ import javax.swing.JButton;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * Menu screen for Standard Mode.
+ * Lets the user choose a difficulty and then starts the Standard Mode game screen.
+ * (Requirements 1.0.0, 1.2.0)
+ */
+
 public class StandardModeMenuFrame extends JFrame{
 	// =============== Standard Mode Menu Frame Setup Section ===============
 	public StandardModeMenuFrame() {

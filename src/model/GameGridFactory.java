@@ -10,6 +10,12 @@ import java.util.function.Function;
  * It does not add cards to a JPanel (that’s the job of the UI/GameScreen class).
  * It just creates the data and ready-to-use buttons.
  */
+
+/**
+ * Factory for building the logical/visual set of cards for a board.
+ * Creates card pairs, assigns icons, and shuffles them before play begins.
+ * (Requirements 1.2.0, 3.0.0)
+ */
 public class GameGridFactory {
 	// Private constructor to make this a utility/factory class only
 	private GameGridFactory() {}
@@ -23,6 +29,11 @@ public class GameGridFactory {
 	 * @param buttonStyler: allows the UI to further style buttons (font, border, color, cursor, etc)
 	 * @return a shuffled List<CardButton> with matching card pairs with the initial back icons in JButton
 	 */
+
+	/**
+ * Builds a shuffled list of CardButton objects for a given board configuration.
+ * (Requirements 1.2.0, 3.0.0)
+ */
 	
 	public static List<CardButton> buildCardButtonsForGrid( 
 			int pairCount,

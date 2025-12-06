@@ -5,6 +5,11 @@ import javax.swing.*;
 
 
 // Class for dealing with the logic behind a user wanting to quit a current game
+/**
+ * Helper for confirming and handling when the player quits the current game.
+ * Shows a confirmation dialog and runs the provided callback on confirmation.
+ * (Requirement 3.1.0)
+ */
 public final class QuitGame {
 
     private QuitGame() {} // utility class
@@ -15,6 +20,10 @@ public final class QuitGame {
      * @param parent      the window to center the dialog on (can be null)
      * @param onConfirm   what to do if the user clicks "Yes, I'm sure"
      */	
+    /**
+ * Displays a "Are you sure you want to quit?" dialog and calls onConfirm if the user agrees.
+ * (Requirement 3.1.0)
+ */
     public static void confirmUserQuitting(JFrame parent, Runnable onConfirm) {
     	// Audiowide font to be applied
     	Font quitComponentsFont = AudiowideFont.get(18f, Font.PLAIN);

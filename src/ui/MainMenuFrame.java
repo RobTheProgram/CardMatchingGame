@@ -23,6 +23,12 @@ import javax.swing.JComboBox;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+/**
+ * Main menu window for the Card Matching Game.
+ * Displays the available game modes and provides navigation/quit options.
+ * (Requirements 1.0.0, 3.1.0)
+ */
+
 public class MainMenuFrame extends JFrame {
 	
 // =============== Main Menu Frame Setup Section ===============

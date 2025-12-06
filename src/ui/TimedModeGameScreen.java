@@ -12,6 +12,13 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Timed Mode gameplay screen for a chosen difficulty.
+ * Builds the board, manages the countdown timer, updates score, and
+ * allows the user to restart or quit the timed game.
+ * (Requirements 1.2.0, 2.0.0, 2.1.0, 2.2.0, 3.0.0, 3.1.0)
+ */
+
 // Generates an entire game screen according to the difficulty mode chosen
 public class TimedModeGameScreen extends JFrame {
 	private final GameConfig config;				// Difficulty configuration object
