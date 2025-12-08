@@ -30,7 +30,16 @@ import java.awt.geom.Point2D;
  */
 
 public class MainMenuFrame extends JFrame {
+	// Audio UI components (made accessible for refreshAudioUI)
+	private JComboBox<String> trackDropdown;
+	private JButton shuffleButton;
+	private JButton loopButton;
+	private JButton muteButton;
+	private JButton sfxButton;
 	
+	// Variable to prevent dropdown ActionListener from firing during programmatic UI updates
+	private boolean updatingUI = false;
+
 // =============== Main Menu Frame Setup Section ===============
 	public MainMenuFrame() {
 		// Title and setup execution
@@ -123,7 +132,6 @@ public class MainMenuFrame extends JFrame {
 		JPanel headerPanel = BoxLayoutSetup.createVerticalPanel(
 				Box.createVerticalStrut(1), // To add space from the top of the window to the header panel
 				titleLabel,
-				titleLabel,
 				mainMenuLabel
 				);
 		
@@ -141,23 +149,49 @@ public class MainMenuFrame extends JFrame {
 		JLabel bgmLabel = new JLabel("BGM Track: ");
 		
 		// Create drop down track menu
-		JComboBox<String> trackDropdown = new JComboBox<>(bgmTracks);
+		trackDropdown = new JComboBox<>(bgmTracks);
 		
+		// Get initial index of the dropdown selection
+		int trackIndex = AudioSettings.getCurrentIndex();
+		
+		// Begin UI-update mode (prevents dropdown from triggering audio change)
+		updatingUI = true;
+		
+		// Set dropdown selection based on current music state
+		if (AudioSettings.isShuffleEnabled()) {
+			// Show the first option (Shuffle Mode (Random))
+		    trackDropdown.setSelectedIndex(0);
+		} 
+		else if (trackIndex >= 0) {
+			// Show the currently playing track
+		    trackDropdown.setSelectedIndex(trackIndex + 1);
+		}
+		else {
+		    // Fallback: default to Shuffle Mode (Random)
+		    trackDropdown.setSelectedIndex(0);
+		}
+		
+		// End UI-update mode (dropdown listener may now respond normally)
+		updatingUI = false;
+
 		// Implement the play back features for the drop down
 		trackDropdown.addActionListener(e -> {
-		    int index = trackDropdown.getSelectedIndex(); // Gets the index of a playlist track
+			if(updatingUI) return; // Ignore event if UI is being refreshed programmatically
+
+			
+		    int indexForSelected = trackDropdown.getSelectedIndex(); // Gets the index of a playlist track
 		    
 		    // Default shuffled playlist play back
-		    if (index == 0) {
+		    if (indexForSelected == 0) {
 		        AudioSettings.playRandom();
 		    // Allows for the playing of a specific track upon selection
 		    } else {
-		        AudioSettings.playSpecificTrack(index - 1);
+		        AudioSettings.playSpecificTrack(indexForSelected - 1);
 		    }
 		});
 		
 		// ===== Mute Toggle Button for music =====
-		JButton muteButton = new JButton("Mute");
+		muteButton = new JButton("Mute");
 
 		muteButton.addActionListener(e -> {
 			AudioSettings.toggleMute();
@@ -165,7 +199,7 @@ public class MainMenuFrame extends JFrame {
 		});
 		
 		// ===== Shuffle Toggle Button =====
-		JButton shuffleButton = new JButton(AudioSettings.isShuffleEnabled() ? "Shuffle: ON" : "Shuffle: OFF");
+		shuffleButton = new JButton(AudioSettings.isShuffleEnabled() ? "Shuffle: ON" : "Shuffle: OFF");
 
 		shuffleButton.addActionListener(e -> {
 		    AudioSettings.toggleShuffle();
@@ -173,7 +207,7 @@ public class MainMenuFrame extends JFrame {
 		});
 		
 		// ===== Loop Selected Track Button =====
-		JButton loopButton = new JButton(AudioSettings.isLoopEnabled() ? "Loop: ON" : "Loop: OFF");
+		loopButton = new JButton(AudioSettings.isLoopEnabled() ? "Loop: ON" : "Loop: OFF");
 
 		loopButton.addActionListener(e -> {
 		    AudioSettings.toggleLoop();
@@ -181,7 +215,7 @@ public class MainMenuFrame extends JFrame {
 		});
 		
 		// ===== SFX (Sound Effects) Toggle Button =====
-		JButton sfxButton = new JButton(SFXPlayer.isEnabled() ? "SFX: ON" : "SFX: OFF");
+		sfxButton = new JButton(SFXPlayer.isEnabled() ? "SFX: ON" : "SFX: OFF");
 
 		sfxButton.addActionListener(e -> {
 		    SFXPlayer.toggle();
@@ -230,10 +264,67 @@ public class MainMenuFrame extends JFrame {
 		
 		// Add music panel to the bottom of the window
 		add(musicPanel, BorderLayout.SOUTH);
-
+		
+		// Method to keep the audio consistent between the opening and closing of UI windows
+		
 	}
-}	
+	
+	@Override
+	public void setVisible(boolean b) {
+	    // Call the parent JFrame visibility handler
+	    super.setVisible(b);
+	    if (b) refreshAudioUI();  // Sync UI with audio states every time the player returns to this screen
+	}
+	
+	// Method to refresh the audio states between User Interfaces
+	public void refreshAudioUI() {
+		
+		// On first arrival to the main menu, do NOT trigger playback again
+		if (AudioSettings.firstRun) {
+		    AudioSettings.firstRun = false;
+		    return;
+		}
+		
+		// Prevent audio events from firing while UI elements are being synchronized
+        updatingUI = true;
+		
+	    // Ensure audio state consistency first before updating UI
+	    AudioSettings.syncState();
 
+	    // Update dropdown selection
+	    if (AudioSettings.isShuffleEnabled()) {
+	        trackDropdown.setSelectedIndex(0); // Shuffle item
+	    } 
+	    else if (AudioSettings.getCurrentIndex() >= 0) {
+	        trackDropdown.setSelectedIndex(AudioSettings.getCurrentIndex() + 1); // Selected track based on index
+	    }
+
+	    // Update shuffle button text
+	    shuffleButton.setText(AudioSettings.isShuffleEnabled()
+	            ? "Shuffle: ON"
+	            : "Shuffle: OFF");
+
+	    // Update loop button text
+	    loopButton.setText(AudioSettings.isLoopEnabled()
+	            ? "Loop: ON"
+	            : "Loop: OFF");
+	    
+	    // Update mute button text
+	    muteButton.setText(AudioSettings.isMuted() 
+	    		? "Unmute" 
+	    		: "Mute");
+
+	    
+	    // Update SFX button text
+	    sfxButton.setText(SFXPlayer.isEnabled() 
+	    		? "SFX: ON" 
+	    		: "SFX: OFF");
+	    
+	    // Re-enable audio event handling
+	    updatingUI = false;
+	}	
+
+}
 
 	
 

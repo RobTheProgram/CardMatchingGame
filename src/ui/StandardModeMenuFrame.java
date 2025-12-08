@@ -1,6 +1,7 @@
 package ui;
 
 import utils.HandCursorUtility;
+import audio.AudioSettings;
 import utils.ButtonCreation;
 import utils.BoxLayoutSetup;
 import utils.AudiowideFont;
@@ -32,6 +33,8 @@ public class StandardModeMenuFrame extends JFrame{
 	public StandardModeMenuFrame() {
 		// Title and setup execution
 		super("Standard Mode Menu");
+	    // Ensure audio state consistency when switching screens
+	    AudioSettings.syncState();
 		// Called once to apply the Audiowide font
 		AudiowideFont.register();
 		// Gives the X close button on window

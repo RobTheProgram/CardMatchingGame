@@ -19,8 +19,12 @@ public class AudioSettings {
     public static boolean isShuffleEnabled() { return shuffleEnabled; }
     // Returns true if Loop Mode is currently enabled (repeats the same selected track)
     public static boolean isLoopEnabled() { return loopSingle; } 
+    // Gets the name of the currently playing song
+    public static String currentSongName;
     // Boolean to determine the blocking of any STOP events or not in music
     private static boolean suppressStopEvent = false;
+    // Boolean to let the music continue to playback without reset
+    public static boolean firstRun = true;
 
     
     // Musical background tracks list
@@ -44,7 +48,6 @@ public class AudioSettings {
   
     // ===== Play a music track =====
     public static void playMusic(String filePath) {
-        loopSingle = true; // user chose a track manually → loop only this one
         playClip(filePath);
     }
     
@@ -58,8 +61,6 @@ public class AudioSettings {
     
     // ===== Play specific track =====
     public static void playSpecificTrack(int singleTrackIndex) {
-        shuffleEnabled = false; // Disable shuffled tracks from playing
-        loopSingle = true; // Make a singular play true
         currentIndex = singleTrackIndex; // Make the current index the selected loop track
         playClip(playlist[singleTrackIndex]); // Play said single track from the index
     }
@@ -70,13 +71,6 @@ public class AudioSettings {
             suppressStopEvent = true; // Block STOP events during transition
             stopMusic();             // safely stop any current track
             suppressStopEvent = false;
-            
-//            // ===== Safely close old clip before starting a new one =====
-//            if (currentClip != null) {
-//                if (currentClip.isRunning()) currentClip.stop();
-//                if (currentClip.isOpen()) currentClip.close();
-//                currentClip = null;
-//            }
             
         	// Retrieve the bgm tracks from the file path
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(
@@ -90,6 +84,12 @@ public class AudioSettings {
             
             // Get the clip
             currentClip = newClip;
+            
+            // Update visible song name
+            String rawFilenameText = filePath.substring(filePath.lastIndexOf("/") + 1).replace(".wav", "");
+            // To make the name pretty (Ex: amp_plains.wav => Amp Plains)
+            currentSongName = rawFilenameText.replace("_", " ")
+                    .replaceFirst(".", String.valueOf(Character.toUpperCase(rawFilenameText.charAt(0))));
 
             // ===== Volume Setup =====
             if (currentClip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
@@ -187,15 +187,41 @@ public class AudioSettings {
     // ===== Toggle Shuffle mode on for music tracks =====
     public static void toggleShuffle() {
         shuffleEnabled = !shuffleEnabled;
-        // Turning shuffle on disables forced looping
-        if (shuffleEnabled) loopSingle = false;
     }
 
     // ===== Toggle Loop mode on for music tracks =====
     public static void toggleLoop() {
         loopSingle = !loopSingle;
-        // Turning loop on disables shuffle
-        if (loopSingle) shuffleEnabled = false;
+    }
+    
+    // ===== Returns the name of the current song on the dropdown interface =====
+    public static String getCurrentSongName() {
+    	return currentSongName;
+    }
+
+    // ===== Returns the current index =====
+    public static int getCurrentIndex() {
+        return currentIndex;
+    }
+    
+    // ===== Returns the current track name based on index =====
+    public static String getCurrentTrackName() {
+        if (currentIndex < 0) return null;
+        return playlist[currentIndex];
+    }
+    
+    // ===== Ensures shuffle/loop rules stay consistent =====
+    public static void syncState() {
+
+        // Loop and shuffle cannot be ON together
+        if (loopSingle && shuffleEnabled) {
+            shuffleEnabled = false;
+        }
+
+        // If nothing is playing yet but shuffle is ON, start random
+        if (currentClip == null && shuffleEnabled) {
+            playRandom();
+        }
     }
 
 }

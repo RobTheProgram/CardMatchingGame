@@ -2,6 +2,7 @@ package ui;
 
 import utils.HandCursorUtility;
 import utils.ButtonCreation;
+import audio.AudioSettings;
 import utils.BoxLayoutSetup;
 import utils.AudiowideFont;
 import utils.ApplyRoundedBorder;
